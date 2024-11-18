@@ -1,14 +1,13 @@
 package pro.test;
 
-
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -42,15 +41,19 @@ public class Contr extends HttpServlet {
         String jsonData = sb.toString();  // JSON 데이터 문자열
 
         // JSON 문자열을 JSONObject로 파싱
-        JSONObject jsonObject1 = new JSONObject(jsonData);
-        
-        JSONObject jsonObject = new JSONObject();
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = (JSONObject) parser.parse(jsonData);  // JSONParser로 파싱
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         // 각 필드를 하나하나 추출하여 출력
-        String id = jsonObject.getString("id");
-        String pw = jsonObject.getString("pw");
-        String name = jsonObject.getString("name");
-        String age = jsonObject.getString("age");
+        String id = (String) jsonObject.get("id");
+        String pw = (String) jsonObject.get("pw");
+        String name = (String) jsonObject.get("name");
+        String age = (String) jsonObject.get("age");
 
         // 콘솔에 출력
         System.out.println("id = " + id);
@@ -59,11 +62,13 @@ public class Contr extends HttpServlet {
         System.out.println("age = " + age);
 
         // JSON 응답 생성
-        String responseMessage = "{\"message\":\"회원가입이 성공적으로 처리되었습니다.\"}";
+        JSONObject responseJson = new JSONObject();
+        responseJson.put("message", "회원가입이 성공적으로 처리되었습니다.");
 
         // JSON 응답 보내기
         PrintWriter writer = response.getWriter();
-        writer.write(responseMessage);
+        writer.write(responseJson.toString());
         writer.flush();
     }
 }
+

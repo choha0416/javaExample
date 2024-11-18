@@ -22,7 +22,6 @@ $(function(){
         $.ajax({
             type: "POST", // 요청 방식은 POST
             url: "${contextPath}/json3", // 서버의 서블릿 URL
-            contentType: "application/json", // 전송할 데이터의 타입은 JSON
             data: JSON.stringify(userData), // 데이터를 JSON 형태로 변환하여 전송
             success: function(data, textStatus) {
                 // 성공 시 처리
@@ -34,6 +33,8 @@ $(function(){
                 alert("에러가 발생했습니다.");
             }
         });
+        
+        
     });
 });
 </script>
@@ -44,7 +45,7 @@ $(function(){
         <li>pw<input type="password" id="pw"></li>
         <li>name<input type="text" id="name"></li>
         <li>age<input type="text" id="age"></li>
-        <li><input type="button" id="checkJson" value="회원가입"/></li>
+        <li><input type="button" id="checkJson" value="회원가입"/></li>'
     </div>    
     
     <div id="message"></div>
